@@ -7,6 +7,7 @@ namespace webignition\StubbleResolvable\Tests\Unit;
 use PHPUnit\Framework\TestCase;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\StubbleResolvable\Tests\Model\Stringable;
 
 class ResolvableTest extends TestCase
 {
@@ -59,5 +60,22 @@ class ResolvableTest extends TestCase
 
         self::assertNotSame($resolvable, $resolvableWithMutator);
         self::assertSame($mutator, $resolvableWithMutator->getResolvedTemplateMutator());
+    }
+
+    public function testCreateFromStringable()
+    {
+        $content = 'literal string content';
+        $stringable = new Stringable($content);
+
+        $resolvable = Resolvable::createFromStringable($stringable);
+
+        $expectedIdentifier = 'object_' . spl_object_id($stringable);
+        self::assertSame('{{ ' . $expectedIdentifier . ' }}', $resolvable->getTemplate());
+        self::assertSame(
+            [
+                $expectedIdentifier => $content
+            ],
+            $resolvable->getContext()
+        );
     }
 }
