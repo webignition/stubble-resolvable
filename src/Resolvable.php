@@ -14,6 +14,11 @@ class Resolvable implements ResolvableInterface
     private array $context;
 
     /**
+     * @var ?callable
+     */
+    private $contextMutator = null;
+
+    /**
      * @param string $template
      * @param array<string, string|ResolvableInterface> $context
      */
@@ -23,6 +28,14 @@ class Resolvable implements ResolvableInterface
         $this->context = $context;
     }
 
+    public function withContextMutator(callable $mutator): self
+    {
+        $new = clone $this;
+        $new->contextMutator = $mutator;
+
+        return $new;
+    }
+
     public function getTemplate(): string
     {
         return $this->template;
@@ -30,6 +43,14 @@ class Resolvable implements ResolvableInterface
 
     public function getContext(): array
     {
-        return $this->context;
+        $context = $this->context;
+
+        if (is_callable($this->contextMutator)) {
+            foreach ($context as $key => $value) {
+                $context[$key] = ($this->contextMutator)($value);
+            }
+        }
+
+        return $context;
     }
 }
