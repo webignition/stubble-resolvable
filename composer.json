@@ -1,0 +1,53 @@
+{
+    "name": "webignition/stubble-resolvable",
+    "description": "",
+    "keywords": [],
+    "homepage": "https://github.com/webignition/stubble-resolvable",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jon Cram",
+            "email": "webignition@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "webignition\\StubbleResolvable\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "webignition\\StubbleResolvable\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "cs": [
+            "./vendor/bin/ecs check src tests --ansi --config ecs.php",
+            "./vendor/bin/phpcs"
+        ],
+        "cs-fix": [
+            "./vendor/bin/ecs check src tests --ansi --config ecs.php --fix"
+        ],
+        "static-analysis": "./vendor/bin/phpstan analyse --ansi",
+        "test": "./vendor/bin/phpunit --colors=always",
+        "ci": [
+            "@cs",
+            "@static-analysis",
+            "@test"
+        ]
+    },
+    "require": {
+        "php": ">=7.4",
+        "phpstan/extension-installer": "^1.0",
+        "phpstan/phpstan": "^0.12.49",
+        "phpunit/phpunit": "^9.4",
+        "squizlabs/php_codesniffer": "^3.5",
+        "symplify/easy-coding-standard": "^8.3"
+    },
+    "require-dev": {
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
