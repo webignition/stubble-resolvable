@@ -12,4 +12,6 @@ interface ResolvableInterface
      * @return array<string, string|ResolvableInterface>
      */
     public function getContext(): array;
+
+    public function withContextMutator(callable $mutator): ResolvableInterface;
 }
