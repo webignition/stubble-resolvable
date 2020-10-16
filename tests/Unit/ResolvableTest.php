@@ -24,61 +24,15 @@ class ResolvableTest extends TestCase
         self::assertSame($template, $resolvable->getTemplate());
     }
 
-    /**
-     * @dataProvider getContextDataProvider
-     *
-     * @param ResolvableInterface $resolvable
-     * @param array<string, string> $expectedContext
-     */
-    public function testGetContext(ResolvableInterface $resolvable, array $expectedContext)
-    {
-        self::assertSame($expectedContext, $resolvable->getContext());
-    }
-
-    public function getContextDataProvider(): array
+    public function testGetContext()
     {
         $context = [
             'key1' => 'value1',
             'key2' => 'value2',
-            'key3' => 'value3',
         ];
 
-        $resolvableWithoutMutator = new Resolvable('template', $context);
-
-        return [
-            'without mutator' => [
-                'resolvable' => $resolvableWithoutMutator,
-                'expectedContext' => $context,
-            ],
-            'non-mutating mutator' => [
-                'resolvable' => $resolvableWithoutMutator->withContextMutator(function (string $item) {
-                    return $item;
-                }),
-                'expectedContext' => $context,
-            ],
-            'non-selective mutator' => [
-                'resolvable' => $resolvableWithoutMutator->withContextMutator(function (string $item) {
-                    return $item . '!';
-                }),
-                'expectedContext' => [
-                    'key1' => 'value1!',
-                    'key2' => 'value2!',
-                    'key3' => 'value3!',
-                ],
-            ],
-            'selective mutator' => [
-                'resolvable' => $resolvableWithoutMutator->withContextMutator(function (string $item) {
-                    return $item === 'value2'
-                        ? $item . '!'
-                        : $item;
-                }),
-                'expectedContext' => [
-                    'key1' => 'value1',
-                    'key2' => 'value2!',
-                    'key3' => 'value3',
-                ],
-            ],
-        ];
+        $resolvable = new Resolvable('', $context);
+        self::assertSame($context, $resolvable->getContext());
     }
 
     public function testContextValuesCanBeResolvable()
@@ -92,5 +46,18 @@ class ResolvableTest extends TestCase
 
         $resolvable = new Resolvable('', $context);
         self::assertSame($context, $resolvable->getContext());
+    }
+
+    public function testResolvedTemplateMutator()
+    {
+        $mutator = function () {
+        };
+
+        $resolvable = new Resolvable('', []);
+        self::assertNull($resolvable->getResolvedTemplateMutator());
+        $resolvableWithMutator = $resolvable->withResolvedTemplateMutator($mutator);
+
+        self::assertNotSame($resolvable, $resolvableWithMutator);
+        self::assertSame($mutator, $resolvableWithMutator->getResolvedTemplateMutator());
     }
 }
