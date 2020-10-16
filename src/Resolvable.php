@@ -9,13 +9,13 @@ class Resolvable implements ResolvableInterface
     private string $template;
 
     /**
-     * @var array<string, string>
+     * @var array<string, string|ResolvableInterface>
      */
     private array $context;
 
     /**
      * @param string $template
-     * @param array<string, string> $context
+     * @param array<string, string|ResolvableInterface> $context
      */
     public function __construct(string $template, array $context)
     {
