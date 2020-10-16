@@ -23,6 +23,18 @@ class Resolvable extends AbstractMutableResolvedTemplate implements ResolvableIn
         $this->context = $context;
     }
 
+    public static function createFromStringable(object $object): self
+    {
+        $identifier = 'object_' . (string) spl_object_id($object);
+
+        return new Resolvable(
+            '{{ ' . $identifier . ' }}',
+            [
+                $identifier => (string) $object,
+            ]
+        );
+    }
+
     public function getTemplate(): string
     {
         return $this->template;
