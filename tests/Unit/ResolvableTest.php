@@ -49,6 +49,19 @@ class ResolvableTest extends TestCase
         self::assertSame($context, $resolvable->getContext());
     }
 
+    public function testContextValuesCanBeStringable()
+    {
+        $context = [
+            'key1' => 'value1',
+            'key2' => new Resolvable('key2 template', [
+                'key2key1' => new Stringable('key2value2')
+            ]),
+        ];
+
+        $resolvable = new Resolvable('', $context);
+        self::assertSame($context, $resolvable->getContext());
+    }
+
     public function testResolvedTemplateMutator()
     {
         $mutator = function () {
