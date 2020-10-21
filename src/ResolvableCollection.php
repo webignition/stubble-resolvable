@@ -12,18 +12,23 @@ class ResolvableCollection implements ResolvableInterface, \IteratorAggregate
     use ResolvedTemplateMutatorTrait;
 
     /**
-     * @var array<string|ResolvableInterface>
+     * @var array<mixed>
      */
     private array $items;
     private string $identifier;
 
     /**
      * @param string $identifier
-     * @param array<string|ResolvableInterface> $items
+     * @param array<mixed> $items
      */
     public function __construct(string $identifier, array $items)
     {
         $this->identifier = $identifier;
+
+        $this->items = array_filter($items, function ($item) {
+            return Resolvable::canResolve($item);
+        });
+
         $this->items = $items;
     }
 
