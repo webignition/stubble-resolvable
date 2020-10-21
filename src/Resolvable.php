@@ -11,7 +11,7 @@ class Resolvable implements ResolvableInterface
     private string $template;
 
     /**
-     * @var array<string, string|ResolvableInterface>
+     * @var array<string, mixed>
      */
     private array $context;
 
