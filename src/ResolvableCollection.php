@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace webignition\StubbleResolvable;
 
-class ResolvableCollection implements ResolvableInterface
+/**
+ * @implements \IteratorAggregate<string|ResolvableInterface>
+ */
+class ResolvableCollection implements ResolvableInterface, \IteratorAggregate
 {
     use ResolvedTemplateMutatorTrait;
 
@@ -40,6 +43,14 @@ class ResolvableCollection implements ResolvableInterface
         }
 
         return $context;
+    }
+
+    /**
+     * @return \Traversable<string|ResolvableInterface>
+     */
+    public function getIterator(): iterable
+    {
+        return new \ArrayIterator($this->items);
     }
 
     /**
