@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace webignition\StubbleResolvable\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
+use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableCollection;
 use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\StubbleResolvable\Tests\Model\Stringable;
 
 class ResolvableCollectionTest extends TestCase
 {
@@ -31,6 +33,17 @@ class ResolvableCollectionTest extends TestCase
 
     public function getTemplateDataProvider(): array
     {
+        $items = [
+            new Resolvable('{{ self }}', [
+                'self' => 'item1',
+            ]),
+            'item2',
+            new Stringable('item3'),
+            new Resolvable('{{ self }}', [
+                'self' => 'item4',
+            ]),
+        ];
+
         return [
             'empty identifier, no items' => [
                 'identifier' => '',
@@ -44,21 +57,13 @@ class ResolvableCollectionTest extends TestCase
             ],
             'empty identifier, has items' => [
                 'identifier' => '',
-                'items' => [
-                    'item1',
-                    'item2',
-                    'item3',
-                ],
-                'expectedTemplate' => '{{ 0 }}{{ 1 }}{{ 2 }}',
+                'items' => $items,
+                'expectedTemplate' => '{{ 0 }}item2item3{{ 1 }}',
             ],
             'has identifier, has items' => [
                 'identifier' => 'collection_item',
-                'items' => [
-                    'item1',
-                    'item2',
-                    'item3',
-                ],
-                'expectedTemplate' => '{{ collection_item0 }}{{ collection_item1 }}{{ collection_item2 }}',
+                'items' => $items,
+                'expectedTemplate' => '{{ collection_item0 }}item2item3{{ collection_item1 }}',
             ],
         ];
     }
@@ -76,6 +81,21 @@ class ResolvableCollectionTest extends TestCase
 
     public function getContextDataProvider(): array
     {
+        $resolvableItem1 = new Resolvable('{{ self }}', [
+            'self' => 'item1',
+        ]);
+
+        $resolvableItem2 = new Resolvable('{{ self }}', [
+            'self' => 'item4',
+        ]);
+
+        $items = [
+            $resolvableItem1,
+            'item2',
+            new Stringable('item3'),
+            $resolvableItem2,
+        ];
+
         return [
             'empty identifier, no items' => [
                 'collection' => new ResolvableCollection('', []),
@@ -86,27 +106,17 @@ class ResolvableCollectionTest extends TestCase
                 'expectedContext' => [],
             ],
             'empty identifier, has items' => [
-                'collection' => new ResolvableCollection('', [
-                    'item1',
-                    'item2',
-                    'item3',
-                ]),
+                'collection' => new ResolvableCollection('', $items),
                 'expectedContext' => [
-                    '0' => 'item1',
-                    '1' => 'item2',
-                    '2' => 'item3',
+                    '0' => $resolvableItem1,
+                    '1' => $resolvableItem2,
                 ],
             ],
             'has identifier, has items' => [
-                'collection' => new ResolvableCollection('collection_item', [
-                    'item1',
-                    'item2',
-                    'item3',
-                ]),
+                'collection' => new ResolvableCollection('collection_item', $items),
                 'expectedContext' => [
-                    'collection_item0' => 'item1',
-                    'collection_item1' => 'item2',
-                    'collection_item2' => 'item3',
+                    'collection_item0' => $resolvableItem1,
+                    'collection_item1' => $resolvableItem2,
                 ],
             ],
         ];
