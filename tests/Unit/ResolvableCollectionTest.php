@@ -124,4 +124,23 @@ class ResolvableCollectionTest extends TestCase
         self::assertNotSame($collection, $resolvableWithMutator);
         self::assertSame($mutator, $resolvableWithMutator->getResolvedTemplateMutator());
     }
+
+    public function testIterable()
+    {
+        $items = [
+            'item1',
+            'item2',
+            'item3',
+        ];
+
+        $collection = new ResolvableCollection('collection_item', $items);
+        self::assertTrue(is_iterable($collection));
+
+        $iteratedItems = [];
+        foreach ($collection as $item) {
+            $iteratedItems[] = $item;
+        }
+
+        self::assertSame($items, $iteratedItems);
+    }
 }
