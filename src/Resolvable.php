@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace webignition\StubbleResolvable;
 
-class Resolvable extends AbstractMutableResolvedTemplate implements ResolvableInterface
+class Resolvable implements ResolvableInterface
 {
+    use ResolvedTemplateMutatorTrait;
+
     private string $template;
 
     /**

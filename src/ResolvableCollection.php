@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace webignition\StubbleResolvable;
 
-class ResolvableCollection extends AbstractMutableResolvedTemplate implements ResolvableInterface
+class ResolvableCollection implements ResolvableInterface
 {
+    use ResolvedTemplateMutatorTrait;
+
     /**
      * @var array<string|ResolvableInterface>
      */
