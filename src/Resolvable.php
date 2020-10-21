@@ -17,11 +17,24 @@ class Resolvable implements ResolvableInterface
 
     /**
      * @param string $template
-     * @param array<string, string|ResolvableInterface> $context
+     * @param array<string, mixed> $context
      */
     public function __construct(string $template, array $context)
     {
         $this->template = $template;
+
+        $this->context = array_filter($context, function ($item) {
+            if (is_string($item)) {
+                return $item;
+            }
+
+            if (is_object($item) && method_exists($item, '__toString')) {
+                return $item;
+            }
+
+            return $item instanceof ResolvableInterface;
+        });
+
         $this->context = $context;
     }
 
