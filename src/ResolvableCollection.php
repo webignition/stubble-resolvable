@@ -12,34 +12,64 @@ class ResolvableCollection implements ResolvableInterface, \IteratorAggregate
     use ResolvedTemplateMutatorTrait;
 
     /**
-     * @var array<string|ResolvableInterface>
+     * @var array<mixed>
      */
     private array $items;
     private string $identifier;
 
     /**
      * @param string $identifier
-     * @param array<string|ResolvableInterface> $items
+     * @param array<mixed> $items
      */
     public function __construct(string $identifier, array $items)
     {
         $this->identifier = $identifier;
+
+        $this->items = array_filter($items, function ($item) {
+            return Resolvable::canResolve($item);
+        });
+
         $this->items = $items;
     }
 
     public function getTemplate(): string
     {
-        return implode('', $this->createItemTemplates());
+        $components = [];
+
+        $resolvableItemIndex = 0;
+        foreach ($this->items as $item) {
+            if ($item instanceof ResolvableInterface) {
+                $components[] = $this->createItemTemplate(
+                    $this->createItemIdentifier($resolvableItemIndex)
+                );
+
+                $resolvableItemIndex++;
+            }
+
+            if (is_string($item)) {
+                $components[] = $item;
+            }
+
+            if (is_object($item) && method_exists($item, '__toString')) {
+                $components[] = (string) $item;
+            }
+        }
+
+        return implode('', $components);
     }
 
     public function getContext(): array
     {
         $context = [];
-        $itemIndex = 0;
 
-        foreach ($this->createItemIdentifiers() as $itemIdentifier) {
-            $context[$itemIdentifier] = $this->items[$itemIndex];
-            $itemIndex++;
+        $resolvableItemIndex = 0;
+        foreach ($this->items as $item) {
+            if ($item instanceof ResolvableInterface) {
+                $itemIdentifier = $this->createItemIdentifier($resolvableItemIndex);
+                $context[$itemIdentifier] = $item;
+
+                $resolvableItemIndex++;
+            }
         }
 
         return $context;
@@ -53,33 +83,9 @@ class ResolvableCollection implements ResolvableInterface, \IteratorAggregate
         return new \ArrayIterator($this->items);
     }
 
-    /**
-     * @return string[]
-     */
-    private function createItemTemplates(): array
+    private function createItemTemplate(string $identifier): string
     {
-        $templates = [];
-
-        foreach ($this->createItemIdentifiers() as $itemIdentifier) {
-            $templates[] = '{{ ' . $itemIdentifier . ' }}';
-        }
-
-        return $templates;
-    }
-
-    /**
-     * @return string[]
-     */
-    private function createItemIdentifiers(): array
-    {
-        $identifiers = [];
-        $itemCount = count($this->items);
-
-        for ($itemIndex = 0; $itemIndex < $itemCount; $itemIndex++) {
-            $identifiers[] = $this->createItemIdentifier($itemIndex);
-        }
-
-        return $identifiers;
+        return '{{ ' . $identifier . ' }}';
     }
 
     private function createItemIdentifier(int $index): string

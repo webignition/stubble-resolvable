@@ -24,18 +24,28 @@ class Resolvable implements ResolvableInterface
         $this->template = $template;
 
         $this->context = array_filter($context, function ($item) {
-            if (is_string($item)) {
-                return $item;
-            }
-
-            if (is_object($item) && method_exists($item, '__toString')) {
-                return $item;
-            }
-
-            return $item instanceof ResolvableInterface;
+            return self::canResolve($item);
         });
 
         $this->context = $context;
+    }
+
+    /**
+     * @param mixed $item
+     *
+     * @return bool
+     */
+    public static function canResolve($item): bool
+    {
+        if (is_string($item)) {
+            return true;
+        }
+
+        if (is_object($item) && method_exists($item, '__toString')) {
+            return true;
+        }
+
+        return $item instanceof ResolvableInterface;
     }
 
     public static function createFromStringable(object $object): self
