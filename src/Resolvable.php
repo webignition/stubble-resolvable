@@ -46,18 +46,6 @@ class Resolvable implements ResolvableInterface
         return $item instanceof ResolvableInterface;
     }
 
-    public static function createFromStringable(object $object): self
-    {
-        $identifier = 'object_' . (string) spl_object_id($object);
-
-        return new Resolvable(
-            '{{ ' . $identifier . ' }}',
-            [
-                $identifier => (string) $object,
-            ]
-        );
-    }
-
     public function getTemplate(): string
     {
         return $this->template;

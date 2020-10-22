@@ -61,21 +61,4 @@ class ResolvableTest extends TestCase
         $resolvable = new Resolvable('', $context);
         self::assertSame($context, $resolvable->getContext());
     }
-
-    public function testCreateFromStringable()
-    {
-        $content = 'literal string content';
-        $stringable = new Stringable($content);
-
-        $resolvable = Resolvable::createFromStringable($stringable);
-
-        $expectedIdentifier = 'object_' . spl_object_id($stringable);
-        self::assertSame('{{ ' . $expectedIdentifier . ' }}', $resolvable->getTemplate());
-        self::assertSame(
-            [
-                $expectedIdentifier => $content
-            ],
-            $resolvable->getContext()
-        );
-    }
 }
