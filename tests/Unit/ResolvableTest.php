@@ -7,7 +7,6 @@ namespace webignition\StubbleResolvable\Tests\Unit;
 use PHPUnit\Framework\TestCase;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
-use webignition\StubbleResolvable\ResolvedTemplateMutationInterface;
 use webignition\StubbleResolvable\Tests\Model\Stringable;
 
 class ResolvableTest extends TestCase
@@ -16,12 +15,6 @@ class ResolvableTest extends TestCase
     {
         $resolvable = new Resolvable('', []);
         self::assertInstanceOf(ResolvableInterface::class, $resolvable);
-    }
-
-    public function testImplementsResolvedTemplateMutationInterface()
-    {
-        $resolvable = new Resolvable('', []);
-        self::assertInstanceOf(ResolvedTemplateMutationInterface::class, $resolvable);
     }
 
     public function testGetTemplate()
@@ -67,24 +60,6 @@ class ResolvableTest extends TestCase
 
         $resolvable = new Resolvable('', $context);
         self::assertSame($context, $resolvable->getContext());
-    }
-
-    public function testResolvedTemplateMutator()
-    {
-        $mutator = function () {
-        };
-
-        $resolvable = new Resolvable('', []);
-        self::assertNull($resolvable->getResolvedTemplateMutator());
-
-        $resolvableWithMutator = $resolvable->withResolvedTemplateMutator($mutator);
-        self::assertInstanceOf(ResolvableInterface::class, $resolvableWithMutator);
-        self::assertInstanceOf(ResolvedTemplateMutationInterface::class, $resolvableWithMutator);
-        self::assertNotSame($resolvable, $resolvableWithMutator);
-
-        if ($resolvableWithMutator instanceof ResolvedTemplateMutationInterface) {
-            self::assertSame($mutator, $resolvableWithMutator->getResolvedTemplateMutator());
-        }
     }
 
     public function testCreateFromStringable()
