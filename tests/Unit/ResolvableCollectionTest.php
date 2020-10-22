@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace webignition\StubbleResolvable\Tests\Unit;
 
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
+use webignition\ObjectReflector\ObjectReflector;
+use webignition\StubbleResolvable\IdentifierGenerator;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableCollection;
 use webignition\StubbleResolvable\ResolvableInterface;
@@ -12,22 +15,53 @@ use webignition\StubbleResolvable\Tests\Model\Stringable;
 
 class ResolvableCollectionTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     public function testImplementsResolvableInterface()
     {
-        $collection = new ResolvableCollection('', []);
+        $collection = new ResolvableCollection([], '');
         self::assertInstanceOf(ResolvableInterface::class, $collection);
+    }
+
+    public function testCreate()
+    {
+        $items = [
+            'item1',
+            'item2',
+            'item3',
+        ];
+
+        $length = ResolvableCollection::GENERATED_IDENTIFIER_LENGTH;
+        $generatedIdentifier = 'generated identifier';
+
+        $identifierGenerator = \Mockery::mock(IdentifierGenerator::class);
+        $identifierGenerator
+            ->shouldReceive('generate')
+            ->with($length)
+            ->andReturn($generatedIdentifier);
+
+        $collection = ResolvableCollection::create($items, $length, $identifierGenerator);
+        self::assertInstanceOf(ResolvableCollection::class, $collection);
+
+        self::assertSame(
+            $generatedIdentifier,
+            ObjectReflector::getProperty($collection, 'identifier')
+        );
+
+        self::assertSame(
+            $items,
+            ObjectReflector::getProperty($collection, 'items')
+        );
     }
 
     /**
      * @dataProvider getTemplateDataProvider
      *
-     * @param string $identifier
-     * @param string[]|ResolvableInterface[] $items
+     * @param ResolvableCollection $collection
      * @param string $expectedTemplate
      */
-    public function testGetTemplate(string $identifier, array $items, string $expectedTemplate)
+    public function testGetTemplate(ResolvableCollection $collection, string $expectedTemplate)
     {
-        $collection = new ResolvableCollection($identifier, $items);
         self::assertSame($expectedTemplate, $collection->getTemplate());
     }
 
@@ -46,23 +80,19 @@ class ResolvableCollectionTest extends TestCase
 
         return [
             'empty identifier, no items' => [
-                'identifier' => '',
-                'items' => [],
+                'collection' => new ResolvableCollection([], ''),
                 'expectedTemplate' => '',
             ],
             'has identifier, no items' => [
-                'identifier' => 'collection_item',
-                'items' => [],
+                'collection' => new ResolvableCollection([], 'collection_item'),
                 'expectedTemplate' => '',
             ],
             'empty identifier, has items' => [
-                'identifier' => '',
-                'items' => $items,
+                'collection' => new ResolvableCollection($items, ''),
                 'expectedTemplate' => '{{ 0 }}item2item3{{ 1 }}',
             ],
             'has identifier, has items' => [
-                'identifier' => 'collection_item',
-                'items' => $items,
+                'collection' => new ResolvableCollection($items, 'collection_item'),
                 'expectedTemplate' => '{{ collection_item0 }}item2item3{{ collection_item1 }}',
             ],
         ];
@@ -98,22 +128,22 @@ class ResolvableCollectionTest extends TestCase
 
         return [
             'empty identifier, no items' => [
-                'collection' => new ResolvableCollection('', []),
+                'collection' => new ResolvableCollection([], ''),
                 'expectedContext' => [],
             ],
             'has identifier, no items' => [
-                'collection' => new ResolvableCollection('collection_item', []),
+                'collection' => new ResolvableCollection([], 'collection_item'),
                 'expectedContext' => [],
             ],
             'empty identifier, has items' => [
-                'collection' => new ResolvableCollection('', $items),
+                'collection' => new ResolvableCollection($items, ''),
                 'expectedContext' => [
                     '0' => $resolvableItem1,
                     '1' => $resolvableItem2,
                 ],
             ],
             'has identifier, has items' => [
-                'collection' => new ResolvableCollection('collection_item', $items),
+                'collection' => new ResolvableCollection($items, 'collection_item'),
                 'expectedContext' => [
                     'collection_item0' => $resolvableItem1,
                     'collection_item1' => $resolvableItem2,
@@ -130,7 +160,7 @@ class ResolvableCollectionTest extends TestCase
             'item3',
         ];
 
-        $collection = new ResolvableCollection('collection_item', $items);
+        $collection = ResolvableCollection::create($items);
         self::assertTrue(is_iterable($collection));
 
         $iteratedItems = [];

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cd226d5ce73e01dab9436689aea6fb3a",
+    "content-hash": "353a5e47fa5b44f061d0698233fd14b7",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -1446,55 +1446,6 @@
                 "source": "https://github.com/phpspec/prophecy/tree/1.12.1"
             },
             "time": "2020-09-29T09:10:42+00:00"
-        },
-        {
-            "name": "phpstan/extension-installer",
-            "version": "1.0.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phpstan/extension-installer.git",
-                "reference": "5c2da3846819f951385cb6a25d3277051481c48a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/extension-installer/zipball/5c2da3846819f951385cb6a25d3277051481c48a",
-                "reference": "5c2da3846819f951385cb6a25d3277051481c48a",
-                "shasum": ""
-            },
-            "require": {
-                "composer-plugin-api": "^1.1 || ^2.0",
-                "php": "^7.1 || ^8.0",
-                "phpstan/phpstan": ">=0.11.6"
-            },
-            "require-dev": {
-                "composer/composer": "^1.8",
-                "consistence/coding-standard": "^3.8",
-                "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
-                "ergebnis/composer-normalize": "^2.0.2",
-                "phing/phing": "^2.16",
-                "php-parallel-lint/php-parallel-lint": "^1.2.0",
-                "phpstan/phpstan-strict-rules": "^0.11",
-                "slevomat/coding-standard": "^5.0.4"
-            },
-            "type": "composer-plugin",
-            "extra": {
-                "class": "PHPStan\\ExtensionInstaller\\Plugin"
-            },
-            "autoload": {
-                "psr-4": {
-                    "PHPStan\\ExtensionInstaller\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Composer plugin for automatic installation of PHPStan extensions",
-            "support": {
-                "issues": "https://github.com/phpstan/extension-installer/issues",
-                "source": "https://github.com/phpstan/extension-installer/tree/1.0.5"
-            },
-            "time": "2020-08-30T12:06:42+00:00"
         },
         {
             "name": "phpstan/phpdoc-parser",
@@ -6386,7 +6337,466 @@
             "time": "2020-07-08T17:02:28+00:00"
         }
     ],
-    "packages-dev": [],
+    "packages-dev": [
+        {
+            "name": "hamcrest/hamcrest-php",
+            "version": "v2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hamcrest/hamcrest-php.git",
+                "reference": "8c3d0a3f6af734494ad8f6fbbee0ba92422859f3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hamcrest/hamcrest-php/zipball/8c3d0a3f6af734494ad8f6fbbee0ba92422859f3",
+                "reference": "8c3d0a3f6af734494ad8f6fbbee0ba92422859f3",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3|^7.0|^8.0"
+            },
+            "replace": {
+                "cordoval/hamcrest-php": "*",
+                "davedevelopment/hamcrest-php": "*",
+                "kodova/hamcrest-php": "*"
+            },
+            "require-dev": {
+                "phpunit/php-file-iterator": "^1.4 || ^2.0",
+                "phpunit/phpunit": "^4.8.36 || ^5.7 || ^6.5 || ^7.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "hamcrest"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "This is the PHP port of Hamcrest Matchers",
+            "keywords": [
+                "test"
+            ],
+            "support": {
+                "issues": "https://github.com/hamcrest/hamcrest-php/issues",
+                "source": "https://github.com/hamcrest/hamcrest-php/tree/v2.0.1"
+            },
+            "time": "2020-07-09T08:09:16+00:00"
+        },
+        {
+            "name": "mockery/mockery",
+            "version": "1.4.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mockery/mockery.git",
+                "reference": "20cab678faed06fac225193be281ea0fddb43b93"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mockery/mockery/zipball/20cab678faed06fac225193be281ea0fddb43b93",
+                "reference": "20cab678faed06fac225193be281ea0fddb43b93",
+                "shasum": ""
+            },
+            "require": {
+                "hamcrest/hamcrest-php": "^2.0.1",
+                "lib-pcre": ">=7.0",
+                "php": "^7.3 || ^8.0"
+            },
+            "conflict": {
+                "phpunit/phpunit": "<8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.5 || ^9.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.4.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Mockery": "library/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Pádraic Brady",
+                    "email": "padraic.brady@gmail.com",
+                    "homepage": "http://blog.astrumfutura.com"
+                },
+                {
+                    "name": "Dave Marshall",
+                    "email": "dave.marshall@atstsolutions.co.uk",
+                    "homepage": "http://davedevelopment.co.uk"
+                }
+            ],
+            "description": "Mockery is a simple yet flexible PHP mock object framework",
+            "homepage": "https://github.com/mockery/mockery",
+            "keywords": [
+                "BDD",
+                "TDD",
+                "library",
+                "mock",
+                "mock objects",
+                "mockery",
+                "stub",
+                "test",
+                "test double",
+                "testing"
+            ],
+            "support": {
+                "issues": "https://github.com/mockery/mockery/issues",
+                "source": "https://github.com/mockery/mockery/tree/master"
+            },
+            "time": "2020-08-11T18:10:13+00:00"
+        },
+        {
+            "name": "php-mock/php-mock",
+            "version": "2.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-mock/php-mock.git",
+                "reference": "890d3e32e3a5f29715a8fd17debd87a0c9e614a0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-mock/php-mock/zipball/890d3e32e3a5f29715a8fd17debd87a0c9e614a0",
+                "reference": "890d3e32e3a5f29715a8fd17debd87a0c9e614a0",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.6 || ^7.0",
+                "phpunit/php-text-template": "^1 || ^2"
+            },
+            "replace": {
+                "malkusch/php-mock": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7 || ^6.5 || ^7.5 || ^8.0 || ^9.0"
+            },
+            "suggest": {
+                "php-mock/php-mock-phpunit": "Allows integration into PHPUnit testcase with the trait PHPMock."
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "autoload.php"
+                ],
+                "psr-4": {
+                    "phpmock\\": [
+                        "classes/",
+                        "tests/"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "WTFPL"
+            ],
+            "authors": [
+                {
+                    "name": "Markus Malkusch",
+                    "email": "markus@malkusch.de",
+                    "homepage": "http://markus.malkusch.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP-Mock can mock built-in PHP functions (e.g. time()). PHP-Mock relies on PHP's namespace fallback policy. No further extension is needed.",
+            "homepage": "https://github.com/php-mock/php-mock",
+            "keywords": [
+                "BDD",
+                "TDD",
+                "function",
+                "mock",
+                "stub",
+                "test",
+                "test double"
+            ],
+            "support": {
+                "issues": "https://github.com/php-mock/php-mock/issues",
+                "source": "https://github.com/php-mock/php-mock/tree/2.2.2"
+            },
+            "time": "2020-04-17T16:39:00+00:00"
+        },
+        {
+            "name": "php-mock/php-mock-integration",
+            "version": "2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-mock/php-mock-integration.git",
+                "reference": "003d585841e435958a02e9b986953907b8b7609b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-mock/php-mock-integration/zipball/003d585841e435958a02e9b986953907b8b7609b",
+                "reference": "003d585841e435958a02e9b986953907b8b7609b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6",
+                "php-mock/php-mock": "^2.2",
+                "phpunit/php-text-template": "^1 || ^2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7.27 || ^6 || ^7 || ^8 || ^9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "phpmock\\integration\\": "classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "WTFPL"
+            ],
+            "authors": [
+                {
+                    "name": "Markus Malkusch",
+                    "email": "markus@malkusch.de",
+                    "homepage": "http://markus.malkusch.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Integration package for PHP-Mock",
+            "homepage": "https://github.com/php-mock/php-mock-integration",
+            "keywords": [
+                "BDD",
+                "TDD",
+                "function",
+                "mock",
+                "stub",
+                "test",
+                "test double"
+            ],
+            "support": {
+                "issues": "https://github.com/php-mock/php-mock-integration/issues",
+                "source": "https://github.com/php-mock/php-mock-integration/tree/2.1.0"
+            },
+            "time": "2020-02-08T14:40:25+00:00"
+        },
+        {
+            "name": "php-mock/php-mock-mockery",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-mock/php-mock-mockery.git",
+                "reference": "d6d3df9d9232f1623f1ca3cfdaacd53415593825"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-mock/php-mock-mockery/zipball/d6d3df9d9232f1623f1ca3cfdaacd53415593825",
+                "reference": "d6d3df9d9232f1623f1ca3cfdaacd53415593825",
+                "shasum": ""
+            },
+            "require": {
+                "mockery/mockery": "^1",
+                "php": ">=5.6",
+                "php-mock/php-mock-integration": "^2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4|^5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "phpmock\\mockery\\": "classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "WTFPL"
+            ],
+            "authors": [
+                {
+                    "name": "Markus Malkusch",
+                    "email": "markus@malkusch.de",
+                    "homepage": "http://markus.malkusch.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Mock built-in PHP functions (e.g. time()) with Mockery. This package relies on PHP's namespace fallback policy. No further extension is needed.",
+            "homepage": "https://github.com/php-mock/php-mock-mockery",
+            "keywords": [
+                "BDD",
+                "TDD",
+                "function",
+                "mock",
+                "mockery",
+                "stub",
+                "test",
+                "test double"
+            ],
+            "support": {
+                "issues": "https://github.com/php-mock/php-mock-mockery/issues",
+                "source": "https://github.com/php-mock/php-mock-mockery/tree/1.3.0"
+            },
+            "time": "2018-03-27T07:00:25+00:00"
+        },
+        {
+            "name": "phpstan/extension-installer",
+            "version": "1.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpstan/extension-installer.git",
+                "reference": "5c2da3846819f951385cb6a25d3277051481c48a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/extension-installer/zipball/5c2da3846819f951385cb6a25d3277051481c48a",
+                "reference": "5c2da3846819f951385cb6a25d3277051481c48a",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.1 || ^2.0",
+                "php": "^7.1 || ^8.0",
+                "phpstan/phpstan": ">=0.11.6"
+            },
+            "require-dev": {
+                "composer/composer": "^1.8",
+                "consistence/coding-standard": "^3.8",
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+                "ergebnis/composer-normalize": "^2.0.2",
+                "phing/phing": "^2.16",
+                "php-parallel-lint/php-parallel-lint": "^1.2.0",
+                "phpstan/phpstan-strict-rules": "^0.11",
+                "slevomat/coding-standard": "^5.0.4"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "PHPStan\\ExtensionInstaller\\Plugin"
+            },
+            "autoload": {
+                "psr-4": {
+                    "PHPStan\\ExtensionInstaller\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Composer plugin for automatic installation of PHPStan extensions",
+            "support": {
+                "issues": "https://github.com/phpstan/extension-installer/issues",
+                "source": "https://github.com/phpstan/extension-installer/tree/1.0.5"
+            },
+            "time": "2020-08-30T12:06:42+00:00"
+        },
+        {
+            "name": "phpstan/phpstan-mockery",
+            "version": "0.12.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpstan/phpstan-mockery.git",
+                "reference": "afe0af2cab68836360121b4e12b74b9d765d386c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/phpstan-mockery/zipball/afe0af2cab68836360121b4e12b74b9d765d386c",
+                "reference": "afe0af2cab68836360121b4e12b74b9d765d386c",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1 || ^8.0",
+                "phpstan/phpstan": "^0.12"
+            },
+            "require-dev": {
+                "consistence/coding-standard": "^3.5",
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+                "ergebnis/composer-normalize": "^2.0.2",
+                "jakub-onderka/php-parallel-lint": "^1.0",
+                "mockery/mockery": "^1.2.4",
+                "phing/phing": "^2.16.0",
+                "phpstan/phpstan-phpunit": "^0.12",
+                "phpstan/phpstan-strict-rules": "^0.12",
+                "phpunit/phpunit": "^7.2",
+                "slevomat/coding-standard": "^4.7.2",
+                "squizlabs/php_codesniffer": "^3.3.2"
+            },
+            "type": "phpstan-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.12-dev"
+                },
+                "phpstan": {
+                    "includes": [
+                        "extension.neon"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PHPStan\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHPStan Mockery extension",
+            "support": {
+                "issues": "https://github.com/phpstan/phpstan-mockery/issues",
+                "source": "https://github.com/phpstan/phpstan-mockery/tree/0.12.7"
+            },
+            "time": "2020-07-21T14:43:24+00:00"
+        },
+        {
+            "name": "webignition/object-reflector",
+            "version": "0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webignition/object-reflector.git",
+                "reference": "31c0d4bd821f98e9ebae0ce14f6aac3a23da551e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webignition/object-reflector/zipball/31c0d4bd821f98e9ebae0ce14f6aac3a23da551e",
+                "reference": "31c0d4bd821f98e9ebae0ce14f6aac3a23da551e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^0.12.28",
+                "phpunit/phpunit": "^9.2",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "webignition\\ObjectReflector\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jon Cram",
+                    "email": "webignition@gmail.com"
+                }
+            ],
+            "homepage": "https://github.com/webignition/object-reflector",
+            "support": {
+                "issues": "https://github.com/webignition/object-reflector/issues",
+                "source": "https://github.com/webignition/object-reflector/tree/0.2"
+            },
+            "time": "2020-06-24T17:20:47+00:00"
+        }
+    ],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": [],

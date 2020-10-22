@@ -9,6 +9,8 @@ namespace webignition\StubbleResolvable;
  */
 class ResolvableCollection implements ResolvableInterface, \IteratorAggregate
 {
+    public const GENERATED_IDENTIFIER_LENGTH = 16;
+
     /**
      * @var array<mixed>
      */
@@ -16,18 +18,36 @@ class ResolvableCollection implements ResolvableInterface, \IteratorAggregate
     private string $identifier;
 
     /**
-     * @param string $identifier
      * @param array<mixed> $items
+     * @param string $identifier
      */
-    public function __construct(string $identifier, array $items)
+    public function __construct(array $items, string $identifier)
     {
-        $this->identifier = $identifier;
-
         $this->items = array_filter($items, function ($item) {
             return Resolvable::canResolve($item);
         });
 
         $this->items = $items;
+        $this->identifier = $identifier;
+    }
+
+    /**
+     * @param array<mixed> $items
+     * @param int $length
+     * @param IdentifierGenerator|null $identifierGenerator
+     *
+     * @return self
+     */
+    public static function create(
+        array $items,
+        int $length = self::GENERATED_IDENTIFIER_LENGTH,
+        ?IdentifierGenerator $identifierGenerator = null
+    ): self {
+        $identifierGenerator = $identifierGenerator instanceof IdentifierGenerator
+            ? $identifierGenerator
+            : new IdentifierGenerator();
+
+        return new ResolvableCollection($items, $identifierGenerator->generate($length));
     }
 
     public function getTemplate(): string
