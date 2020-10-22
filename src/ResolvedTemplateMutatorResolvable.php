@@ -13,12 +13,10 @@ class ResolvedTemplateMutatorResolvable implements ResolvableInterface, Resolved
      */
     private $mutator;
 
-    public function __construct(ResolvableInterface $resolvable)
+    public function __construct(ResolvableInterface $resolvable, callable $mutator)
     {
         $this->resolvable = $resolvable;
-        $this->mutator = function (string $resolvedTemplate) {
-            return $resolvedTemplate;
-        };
+        $this->mutator = $mutator;
     }
 
     public function getTemplate(): string
@@ -34,13 +32,5 @@ class ResolvedTemplateMutatorResolvable implements ResolvableInterface, Resolved
     public function getResolvedTemplateMutator(): callable
     {
         return $this->mutator;
-    }
-
-    public function withResolvedTemplateMutator(callable $mutator): ResolvableInterface
-    {
-        $new = clone $this;
-        $new->mutator = $mutator;
-
-        return $new;
     }
 }
