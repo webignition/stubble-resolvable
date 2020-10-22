@@ -7,6 +7,7 @@ namespace webignition\StubbleResolvable\Tests\Unit;
 use PHPUnit\Framework\TestCase;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\StubbleResolvable\ResolvableProviderInterface;
 use webignition\StubbleResolvable\ResolvedTemplateMutationInterface;
 use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
@@ -75,5 +76,19 @@ class ResolvedTemplateMutatorResolvableTest extends TestCase
             'template content!',
             ($resolvable->getResolvedTemplateMutator())($resolvable->getTemplate())
         );
+    }
+
+    public function testGetResolvable()
+    {
+        $encapsulatedResolvable = new Resolvable('', []);
+
+        $resolvable = new ResolvedTemplateMutatorResolvable(
+            $encapsulatedResolvable,
+            function () {
+            }
+        );
+
+        self::assertInstanceOf(ResolvableProviderInterface::class, $resolvable);
+        self::assertSame($encapsulatedResolvable, $resolvable->getResolvable());
     }
 }
