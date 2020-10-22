@@ -15,7 +15,9 @@ class ResolvedTemplateMutatorResolvableTest extends TestCase
     public function testImplementsResolvableInterface()
     {
         $resolvable = new ResolvedTemplateMutatorResolvable(
-            new Resolvable('', [])
+            new Resolvable('', []),
+            function () {
+            }
         );
 
         self::assertInstanceOf(ResolvableInterface::class, $resolvable);
@@ -24,7 +26,9 @@ class ResolvedTemplateMutatorResolvableTest extends TestCase
     public function testImplementsResolvedTemplateMutationInterface()
     {
         $resolvable = new ResolvedTemplateMutatorResolvable(
-            new Resolvable('', [])
+            new Resolvable('', []),
+            function () {
+            }
         );
 
         self::assertInstanceOf(ResolvedTemplateMutationInterface::class, $resolvable);
@@ -34,7 +38,9 @@ class ResolvedTemplateMutatorResolvableTest extends TestCase
     {
         $template = 'template content';
         $resolvable = new ResolvedTemplateMutatorResolvable(
-            new Resolvable($template, [])
+            new Resolvable($template, []),
+            function () {
+            }
         );
 
         self::assertSame($template, $resolvable->getTemplate());
@@ -48,7 +54,9 @@ class ResolvedTemplateMutatorResolvableTest extends TestCase
         ];
 
         $resolvable = new ResolvedTemplateMutatorResolvable(
-            new Resolvable('', $context)
+            new Resolvable('', $context),
+            function () {
+            }
         );
 
         self::assertSame($context, $resolvable->getContext());
@@ -56,30 +64,16 @@ class ResolvedTemplateMutatorResolvableTest extends TestCase
 
     public function testResolvedTemplateMutator()
     {
-        $mutator = function (string $resolvedTemplate) {
-            return $resolvedTemplate . '!';
-        };
-
         $resolvable = new ResolvedTemplateMutatorResolvable(
-            new Resolvable('template content', [])
+            new Resolvable('template content', []),
+            function (string $resolvedTemplate) {
+                return $resolvedTemplate . '!';
+            }
         );
 
         self::assertSame(
-            'template content',
+            'template content!',
             ($resolvable->getResolvedTemplateMutator())($resolvable->getTemplate())
         );
-
-        $resolvableWithMutator = $resolvable->withResolvedTemplateMutator($mutator);
-
-        self::assertInstanceOf(ResolvableInterface::class, $resolvableWithMutator);
-        self::assertInstanceOf(ResolvedTemplateMutationInterface::class, $resolvableWithMutator);
-        self::assertNotSame($resolvable, $resolvableWithMutator);
-
-        if ($resolvableWithMutator instanceof ResolvedTemplateMutatorResolvable) {
-            self::assertSame(
-                'template content!',
-                ($resolvableWithMutator->getResolvedTemplateMutator())($resolvableWithMutator->getTemplate())
-            );
-        }
     }
 }
