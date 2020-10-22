@@ -7,13 +7,8 @@ namespace webignition\StubbleResolvable;
 /**
  * @implements \IteratorAggregate<string|ResolvableInterface>
  */
-class ResolvableCollection implements
-    ResolvableInterface,
-    ResolvedTemplateMutationInterface,
-    \IteratorAggregate
+class ResolvableCollection implements ResolvableInterface, \IteratorAggregate
 {
-    use ResolvedTemplateMutatorTrait;
-
     /**
      * @var array<mixed>
      */
