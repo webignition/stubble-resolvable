@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\StubbleResolvable;
 
-class Resolvable implements ResolvableInterface
+class Resolvable implements ResolvableInterface, ResolvedTemplateMutationInterface
 {
     use ResolvedTemplateMutatorTrait;
 

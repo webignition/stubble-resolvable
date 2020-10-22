@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableCollection;
 use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\StubbleResolvable\ResolvedTemplateMutationInterface;
 use webignition\StubbleResolvable\Tests\Model\Stringable;
 
 class ResolvableCollectionTest extends TestCase
@@ -129,10 +130,15 @@ class ResolvableCollectionTest extends TestCase
 
         $collection = new ResolvableCollection('', []);
         self::assertNull($collection->getResolvedTemplateMutator());
-        $resolvableWithMutator = $collection->withResolvedTemplateMutator($mutator);
 
+        $resolvableWithMutator = $collection->withResolvedTemplateMutator($mutator);
+        self::assertInstanceOf(ResolvableInterface::class, $resolvableWithMutator);
+        self::assertInstanceOf(ResolvedTemplateMutationInterface::class, $resolvableWithMutator);
         self::assertNotSame($collection, $resolvableWithMutator);
-        self::assertSame($mutator, $resolvableWithMutator->getResolvedTemplateMutator());
+
+        if ($resolvableWithMutator instanceof ResolvedTemplateMutationInterface) {
+            self::assertSame($mutator, $resolvableWithMutator->getResolvedTemplateMutator());
+        }
     }
 
     public function testIterable()
