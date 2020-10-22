@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace webignition\StubbleResolvable;
 
-class ResolvedTemplateMutatorResolvable implements ResolvableInterface, ResolvedTemplateMutationInterface
+class ResolvedTemplateMutatorResolvable implements
+    ResolvableInterface,
+    ResolvableProviderInterface,
+    ResolvedTemplateMutationInterface
 {
     private ResolvableInterface $resolvable;
 
@@ -32,5 +35,10 @@ class ResolvedTemplateMutatorResolvable implements ResolvableInterface, Resolved
     public function getResolvedTemplateMutator(): callable
     {
         return $this->mutator;
+    }
+
+    public function getResolvable(): ResolvableInterface
+    {
+        return $this->resolvable;
     }
 }
