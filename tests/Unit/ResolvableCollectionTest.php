@@ -12,6 +12,7 @@ use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableCollection;
 use webignition\StubbleResolvable\ResolvableInterface;
 use webignition\StubbleResolvable\Tests\Model\Stringable;
+use webignition\StubbleResolvable\Tests\Model\StringableResolvable;
 
 class ResolvableCollectionTest extends TestCase
 {
@@ -76,6 +77,7 @@ class ResolvableCollectionTest extends TestCase
             new Resolvable('{{ self }}', [
                 'self' => 'item4',
             ]),
+            new StringableResolvable('item5'),
         ];
 
         return [
@@ -89,11 +91,11 @@ class ResolvableCollectionTest extends TestCase
             ],
             'empty identifier, has items' => [
                 'collection' => new ResolvableCollection($items, ''),
-                'expectedTemplate' => '{{ 0 }}item2item3{{ 1 }}',
+                'expectedTemplate' => '{{ 0 }}item2item3{{ 1 }}item5',
             ],
             'has identifier, has items' => [
                 'collection' => new ResolvableCollection($items, 'collection_item'),
-                'expectedTemplate' => '{{ collection_item0 }}item2item3{{ collection_item1 }}',
+                'expectedTemplate' => '{{ collection_item0 }}item2item3{{ collection_item1 }}item5',
             ],
         ];
     }
