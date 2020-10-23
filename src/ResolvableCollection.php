@@ -76,7 +76,7 @@ class ResolvableCollection implements ResolvableInterface, \IteratorAggregate
 
         $resolvableItemIndex = 0;
         foreach ($this->items as $item) {
-            if ($item instanceof ResolvableInterface) {
+            if (false === $this->isStringable($item) && $item instanceof ResolvableInterface) {
                 $itemIdentifier = $this->createItemIdentifier($resolvableItemIndex);
                 $context[$itemIdentifier] = $item;
 

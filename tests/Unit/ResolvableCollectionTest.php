@@ -126,6 +126,7 @@ class ResolvableCollectionTest extends TestCase
             'item2',
             new Stringable('item3'),
             $resolvableItem2,
+            new StringableResolvable('item5'),
         ];
 
         return [
