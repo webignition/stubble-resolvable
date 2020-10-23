@@ -56,20 +56,14 @@ class ResolvableCollection implements ResolvableInterface, \IteratorAggregate
 
         $resolvableItemIndex = 0;
         foreach ($this->items as $item) {
-            if ($item instanceof ResolvableInterface) {
+            if ($this->isStringable($item)) {
+                $components[] = (string) $item;
+            } elseif ($item instanceof ResolvableInterface) {
                 $components[] = $this->createItemTemplate(
                     $this->createItemIdentifier($resolvableItemIndex)
                 );
 
                 $resolvableItemIndex++;
-            }
-
-            if (is_string($item)) {
-                $components[] = $item;
-            }
-
-            if (is_object($item) && method_exists($item, '__toString')) {
-                $components[] = (string) $item;
             }
         }
 
@@ -109,5 +103,23 @@ class ResolvableCollection implements ResolvableInterface, \IteratorAggregate
     private function createItemIdentifier(int $index): string
     {
         return $this->identifier . ((string) $index);
+    }
+
+    /**
+     * @param mixed $object
+     *
+     * @return bool
+     */
+    private function isStringable($object): bool
+    {
+        if (is_string($object)) {
+            return true;
+        }
+
+        if (is_object($object) && method_exists($object, '__toString')) {
+            return true;
+        }
+
+        return false;
     }
 }
