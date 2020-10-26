@@ -39,7 +39,6 @@
     },
     "require": {
         "php": ">=7.4",
-        "phpunit/phpunit": "^9.4",
         "squizlabs/php_codesniffer": "^3.5",
         "symplify/easy-coding-standard": "^8.3"
     },
@@ -50,6 +49,7 @@
         "phpstan/extension-installer": "^1.0",
         "phpstan/phpstan": "^0.12.52",
         "phpstan/phpstan-mockery": "^0.12.7",
+        "phpunit/phpunit": "^9.4",
         "webignition/object-reflector": "^0.2.0"
     },
     "config": {
