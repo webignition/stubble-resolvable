@@ -12,9 +12,9 @@ class ResolvableCollection implements ResolvableInterface, \IteratorAggregate
     public const GENERATED_IDENTIFIER_LENGTH = 16;
 
     /**
-     * @var array<mixed>
+     * @var array<int, string|ResolvableInterface>
      */
-    private array $items;
+    private array $items = [];
     private string $identifier;
 
     /**
@@ -23,11 +23,14 @@ class ResolvableCollection implements ResolvableInterface, \IteratorAggregate
      */
     public function __construct(array $items, string $identifier)
     {
-        $this->items = array_filter($items, function ($item) {
-            return Resolvable::canResolve($item);
-        });
+        foreach ($items as $item) {
+            if (is_string($item) || is_object($item) && method_exists($item, '__toString')) {
+                $this->items[] = (string) $item;
+            } elseif ($item instanceof ResolvableInterface) {
+                $this->items[] = $item;
+            }
+        }
 
-        $this->items = $items;
         $this->identifier = $identifier;
     }
 
@@ -56,7 +59,7 @@ class ResolvableCollection implements ResolvableInterface, \IteratorAggregate
 
         $resolvableItemIndex = 0;
         foreach ($this->items as $item) {
-            if ($this->isStringable($item)) {
+            if (is_string($item) || is_object($item) && method_exists($item, '__toString')) {
                 $components[] = (string) $item;
             } elseif ($item instanceof ResolvableInterface) {
                 $components[] = $this->createItemTemplate(
@@ -76,7 +79,9 @@ class ResolvableCollection implements ResolvableInterface, \IteratorAggregate
 
         $resolvableItemIndex = 0;
         foreach ($this->items as $item) {
-            if (false === $this->isStringable($item) && $item instanceof ResolvableInterface) {
+            $isStringable = is_string($item) || is_object($item) && method_exists($item, '__toString');
+
+            if (false === $isStringable && $item instanceof ResolvableInterface) {
                 $itemIdentifier = $this->createItemIdentifier($resolvableItemIndex);
                 $context[$itemIdentifier] = $item;
 
@@ -103,23 +108,5 @@ class ResolvableCollection implements ResolvableInterface, \IteratorAggregate
     private function createItemIdentifier(int $index): string
     {
         return $this->identifier . ((string) $index);
-    }
-
-    /**
-     * @param mixed $object
-     *
-     * @return bool
-     */
-    private function isStringable($object): bool
-    {
-        if (is_string($object)) {
-            return true;
-        }
-
-        if (is_object($object) && method_exists($object, '__toString')) {
-            return true;
-        }
-
-        return false;
     }
 }
