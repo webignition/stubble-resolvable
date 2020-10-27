@@ -37,9 +37,15 @@ class ResolvedTemplateMutatorResolvable implements
      */
     public function getResolvedTemplateMutators(): array
     {
-        return [
-            $this->mutator,
-        ];
+        $mutators = [];
+
+        if ($this->resolvable instanceof ResolvedTemplateMutationInterface) {
+            $mutators = array_merge($mutators, $this->resolvable->getResolvedTemplateMutators());
+        }
+
+        $mutators[] = $this->mutator;
+
+        return $mutators;
     }
 
     public function getResolvable(): ResolvableInterface
