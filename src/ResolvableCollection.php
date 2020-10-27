@@ -7,7 +7,7 @@ namespace webignition\StubbleResolvable;
 /**
  * @implements \IteratorAggregate<string|ResolvableInterface>
  */
-class ResolvableCollection implements ResolvableInterface, \IteratorAggregate
+class ResolvableCollection implements ResolvableCollectionInterface, \IteratorAggregate
 {
     public const GENERATED_IDENTIFIER_LENGTH = 16;
 
@@ -108,5 +108,22 @@ class ResolvableCollection implements ResolvableInterface, \IteratorAggregate
     private function createItemIdentifier(int $index): string
     {
         return $this->identifier . ((string) $index);
+    }
+
+    /**
+     * @param string|ResolvableInterface $item
+     *
+     * @return int|null
+     */
+    public function getIndexForItem($item): ?int
+    {
+        $position = array_search($item, $this->items);
+
+        return false === $position ? null : $position;
+    }
+
+    public function count(): int
+    {
+        return count($this->items);
     }
 }

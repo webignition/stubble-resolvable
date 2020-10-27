@@ -10,6 +10,7 @@ use webignition\ObjectReflector\ObjectReflector;
 use webignition\StubbleResolvable\IdentifierGenerator;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableCollection;
+use webignition\StubbleResolvable\ResolvableCollectionInterface;
 use webignition\StubbleResolvable\ResolvableInterface;
 use webignition\StubbleResolvable\Tests\Model\Stringable;
 use webignition\StubbleResolvable\Tests\Model\StringableResolvable;
@@ -18,10 +19,11 @@ class ResolvableCollectionTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testImplementsResolvableInterface()
+    public function testImplementsInterfaces()
     {
         $collection = new ResolvableCollection([], '');
         self::assertInstanceOf(ResolvableInterface::class, $collection);
+        self::assertInstanceOf(ResolvableCollectionInterface::class, $collection);
     }
 
     public function testCreate()
@@ -163,7 +165,7 @@ class ResolvableCollectionTest extends TestCase
             'item3',
         ];
 
-        $collection = ResolvableCollection::create($items);
+        $collection = new ResolvableCollection($items, '');
         self::assertTrue(is_iterable($collection));
 
         $iteratedItems = [];
@@ -172,5 +174,80 @@ class ResolvableCollectionTest extends TestCase
         }
 
         self::assertSame($items, $iteratedItems);
+    }
+
+    /**
+     * @dataProvider countDataProvider
+     */
+    public function testCount(ResolvableCollection $collection, int $expectedCount)
+    {
+        self::assertSame($expectedCount, count($collection));
+    }
+
+    public function countDataProvider(): array
+    {
+        return [
+            'zero' => [
+                'collection' => new ResolvableCollection([], ''),
+                'expectedCount' => 0,
+            ],
+            'one' => [
+                'collection' => new ResolvableCollection(['item1'], ''),
+                'expectedCount' => 1,
+            ],
+            'three' => [
+                'collection' => new ResolvableCollection(['item1', 'item2', 'item3'], ''),
+                'expectedCount' => 3,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider getItemForIndexDataProvider
+     *
+     * @param ResolvableCollection $collection
+     * @param mixed $item
+     * @param int|null $expectedIndex
+     */
+    public function testGetIndexForItem(ResolvableCollection $collection, $item, ?int $expectedIndex)
+    {
+        self::assertSame($expectedIndex, $collection->getIndexForItem($item));
+    }
+
+    public function getItemForIndexDataProvider(): array
+    {
+        $resolvable = new Resolvable('', []);
+
+        $collection = new ResolvableCollection(
+            [
+                'item1',
+                'item2',
+                $resolvable,
+            ],
+            ''
+        );
+
+        return [
+            'empty collection' => [
+                'collection' => new ResolvableCollection([], ''),
+                'item' => 'item',
+                'expectedIndex' => null,
+            ],
+            'item not present' => [
+                'collection' => $collection,
+                'item' => 'item',
+                'expectedIndex' => null,
+            ],
+            'first item' => [
+                'collection' => $collection,
+                'item' => 'item1',
+                'expectedIndex' => 0,
+            ],
+            'last item' => [
+                'collection' => $collection,
+                'item' => $resolvable,
+                'expectedIndex' => 2,
+            ],
+        ];
     }
 }
