@@ -56,19 +56,73 @@ class ResolvedTemplateMutatorResolvableTest extends TestCase
         self::assertSame($context, $resolvable->getContext());
     }
 
-    public function testResolvedTemplateMutator()
-    {
-        $resolvable = new ResolvedTemplateMutatorResolvable(
-            new Resolvable('template content', []),
-            function (string $resolvedTemplate) {
-                return $resolvedTemplate . '!';
+    /**
+     * @dataProvider resolvedTemplateMutatorsDataProvider
+     */
+    public function testResolvedTemplateMutators(
+        string $resolvedTemplate,
+        ResolvedTemplateMutatorResolvable $resolvable,
+        string $expectedMutatedResolvedTemplate
+    ) {
+        $mutators = $resolvable->getResolvedTemplateMutators();
+        foreach ($mutators as $mutator) {
+            if (is_callable($mutator)) {
+                $resolvedTemplate = $mutator($resolvedTemplate);
             }
-        );
+        }
 
-        self::assertSame(
-            'template content!',
-            ($resolvable->getResolvedTemplateMutator())($resolvable->getTemplate())
-        );
+        self::assertSame($expectedMutatedResolvedTemplate, $resolvedTemplate);
+    }
+
+    public function resolvedTemplateMutatorsDataProvider(): array
+    {
+        return [
+            'non-mutating inner resolvable' => [
+                'resolvedTemplate' => 'content',
+                'resolvable' => new ResolvedTemplateMutatorResolvable(
+                    new Resolvable('content', []),
+                    function (string $resolvedTemplate) {
+                        return $resolvedTemplate . ' append 1';
+                    }
+                ),
+                'expectedMutatedResolvedTemplate' => 'content append 1',
+            ],
+            'mutating inner resolvable' => [
+                'resolvedTemplate' => 'content',
+                'resolvable' => new ResolvedTemplateMutatorResolvable(
+                    new ResolvedTemplateMutatorResolvable(
+                        new Resolvable('content', []),
+                        function (string $resolvedTemplate) {
+                            return $resolvedTemplate . ' append 1';
+                        }
+                    ),
+                    function (string $resolvedTemplate) {
+                        return $resolvedTemplate . ' append 2';
+                    }
+                ),
+                'expectedMutatedResolvedTemplate' => 'content append 1 append 2',
+            ],
+            'mutating inner resolvable inside mutating inner resolvable' => [
+                'resolvedTemplate' => 'content',
+                'resolvable' => new ResolvedTemplateMutatorResolvable(
+                    new ResolvedTemplateMutatorResolvable(
+                        new ResolvedTemplateMutatorResolvable(
+                            new Resolvable('content', []),
+                            function (string $resolvedTemplate) {
+                                return $resolvedTemplate . ' append 1';
+                            }
+                        ),
+                        function (string $resolvedTemplate) {
+                            return $resolvedTemplate . ' append 2';
+                        }
+                    ),
+                    function (string $resolvedTemplate) {
+                        return $resolvedTemplate . ' append 3';
+                    }
+                ),
+                'expectedMutatedResolvedTemplate' => 'content append 1 append 2 append 3',
+            ],
+        ];
     }
 
     public function testGetResolvable()
