@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\StubbleResolvable;
 
 class ResolvedTemplateMutatorResolvable implements
-    ResolvableInterface,
+    ResolvableCollectionInterface,
     ResolvableProviderInterface,
     ResolvedTemplateMutationInterface
 {
@@ -40,5 +40,23 @@ class ResolvedTemplateMutatorResolvable implements
     public function getResolvable(): ResolvableInterface
     {
         return $this->resolvable;
+    }
+
+    public function count(): int
+    {
+        if ($this->resolvable instanceof ResolvableCollectionInterface) {
+            return $this->resolvable->count();
+        }
+
+        return 1;
+    }
+
+    public function getIndexForItem($item): ?int
+    {
+        if ($this->resolvable instanceof ResolvableCollectionInterface) {
+            return $this->resolvable->getIndexForItem($item);
+        }
+
+        return null;
     }
 }
