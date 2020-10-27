@@ -6,5 +6,8 @@ namespace webignition\StubbleResolvable;
 
 interface ResolvedTemplateMutationInterface
 {
-    public function getResolvedTemplateMutator(): callable;
+    /**
+     * @return callable[]
+     */
+    public function getResolvedTemplateMutators(): array;
 }

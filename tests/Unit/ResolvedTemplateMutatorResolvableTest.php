@@ -56,18 +56,27 @@ class ResolvedTemplateMutatorResolvableTest extends TestCase
         self::assertSame($context, $resolvable->getContext());
     }
 
-    public function testResolvedTemplateMutator()
+    public function testResolvedTemplateMutators()
     {
+        $resolvedTemplate = 'template content';
+
         $resolvable = new ResolvedTemplateMutatorResolvable(
-            new Resolvable('template content', []),
+            new Resolvable($resolvedTemplate, []),
             function (string $resolvedTemplate) {
                 return $resolvedTemplate . '!';
             }
         );
 
+        $mutators = $resolvable->getResolvedTemplateMutators();
+        foreach ($mutators as $mutator) {
+            if (is_callable($mutator)) {
+                $resolvedTemplate = $mutator($resolvedTemplate);
+            }
+        }
+
         self::assertSame(
             'template content!',
-            ($resolvable->getResolvedTemplateMutator())($resolvable->getTemplate())
+            $resolvedTemplate
         );
     }
 

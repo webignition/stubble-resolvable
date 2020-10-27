@@ -32,9 +32,14 @@ class ResolvedTemplateMutatorResolvable implements
         return $this->resolvable->getContext();
     }
 
-    public function getResolvedTemplateMutator(): callable
+    /**
+     * @return callable[]
+     */
+    public function getResolvedTemplateMutators(): array
     {
-        return $this->mutator;
+        return [
+            $this->mutator,
+        ];
     }
 
     public function getResolvable(): ResolvableInterface
