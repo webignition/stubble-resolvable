@@ -13,7 +13,7 @@ class IdentifierGeneratorTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testGenerateWithRandomBytes()
+    public function testGenerateWithRandomBytes(): void
     {
         $length = 16;
         $mockedRandomBytes = 'mocked random_bytes';
@@ -34,7 +34,7 @@ class IdentifierGeneratorTest extends TestCase
         self::assertSame($mockedBin2Hex, $identifier);
     }
 
-    public function testGenerateWithRandomBytesThrowsException()
+    public function testGenerateWithRandomBytesThrowsException(): void
     {
         $length = 16;
         $mockedStrShuffle = 'mocked str_shuffle';

@@ -19,14 +19,14 @@ class ResolvableCollectionTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testImplementsInterfaces()
+    public function testImplementsInterfaces(): void
     {
         $collection = new ResolvableCollection([], '');
         self::assertInstanceOf(ResolvableInterface::class, $collection);
         self::assertInstanceOf(ResolvableCollectionInterface::class, $collection);
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $items = [
             'item1',
@@ -63,11 +63,14 @@ class ResolvableCollectionTest extends TestCase
      * @param ResolvableCollection $collection
      * @param string $expectedTemplate
      */
-    public function testGetTemplate(ResolvableCollection $collection, string $expectedTemplate)
+    public function testGetTemplate(ResolvableCollection $collection, string $expectedTemplate): void
     {
         self::assertSame($expectedTemplate, $collection->getTemplate());
     }
 
+    /**
+     * @return array[]
+     */
     public function getTemplateDataProvider(): array
     {
         $items = [
@@ -108,11 +111,14 @@ class ResolvableCollectionTest extends TestCase
      * @param ResolvableCollection $collection
      * @param string[]|ResolvableCollection[] $expectedContext
      */
-    public function testGetContext(ResolvableCollection $collection, array $expectedContext)
+    public function testGetContext(ResolvableCollection $collection, array $expectedContext): void
     {
         self::assertEquals($expectedContext, $collection->getContext());
     }
 
+    /**
+     * @return array[]
+     */
     public function getContextDataProvider(): array
     {
         $resolvableItem1 = new Resolvable('{{ self }}', [
@@ -157,7 +163,7 @@ class ResolvableCollectionTest extends TestCase
         ];
     }
 
-    public function testIterable()
+    public function testIterable(): void
     {
         $items = [
             'item1',
@@ -179,11 +185,14 @@ class ResolvableCollectionTest extends TestCase
     /**
      * @dataProvider countDataProvider
      */
-    public function testCount(ResolvableCollection $collection, int $expectedCount)
+    public function testCount(ResolvableCollection $collection, int $expectedCount): void
     {
         self::assertSame($expectedCount, count($collection));
     }
 
+    /**
+     * @return array[]
+     */
     public function countDataProvider(): array
     {
         return [
@@ -209,11 +218,14 @@ class ResolvableCollectionTest extends TestCase
      * @param mixed $item
      * @param int|null $expectedIndex
      */
-    public function testGetIndexForItem(ResolvableCollection $collection, $item, ?int $expectedIndex)
+    public function testGetIndexForItem(ResolvableCollection $collection, $item, ?int $expectedIndex): void
     {
         self::assertSame($expectedIndex, $collection->getIndexForItem($item));
     }
 
+    /**
+     * @return array[]
+     */
     public function getItemForIndexDataProvider(): array
     {
         $resolvable = new Resolvable('', []);
