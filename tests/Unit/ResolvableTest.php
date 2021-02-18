@@ -11,13 +11,13 @@ use webignition\StubbleResolvable\Tests\Model\Stringable;
 
 class ResolvableTest extends TestCase
 {
-    public function testImplementsResolvableInterface()
+    public function testImplementsResolvableInterface(): void
     {
         $resolvable = new Resolvable('', []);
         self::assertInstanceOf(ResolvableInterface::class, $resolvable);
     }
 
-    public function testGetTemplate()
+    public function testGetTemplate(): void
     {
         $template = 'template content';
 
@@ -25,7 +25,7 @@ class ResolvableTest extends TestCase
         self::assertSame($template, $resolvable->getTemplate());
     }
 
-    public function testGetContext()
+    public function testGetContext(): void
     {
         $context = [
             'key1' => 'value1',
@@ -36,7 +36,7 @@ class ResolvableTest extends TestCase
         self::assertSame($context, $resolvable->getContext());
     }
 
-    public function testContextValuesCanBeResolvable()
+    public function testContextValuesCanBeResolvable(): void
     {
         $context = [
             'key1' => 'value1',
@@ -49,7 +49,7 @@ class ResolvableTest extends TestCase
         self::assertSame($context, $resolvable->getContext());
     }
 
-    public function testContextValuesCanBeStringable()
+    public function testContextValuesCanBeStringable(): void
     {
         $context = [
             'key1' => 'value1',

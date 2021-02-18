@@ -10,13 +10,13 @@ use webignition\StubbleResolvable\ResolvableWithoutContext;
 
 class ResolvableWithoutContextTest extends TestCase
 {
-    public function testImplementsResolvableInterface()
+    public function testImplementsResolvableInterface(): void
     {
         $resolvable = new ResolvableWithoutContext('');
         self::assertInstanceOf(ResolvableInterface::class, $resolvable);
     }
 
-    public function testGetTemplate()
+    public function testGetTemplate(): void
     {
         $content = 'pre-resolved content';
 
@@ -24,7 +24,7 @@ class ResolvableWithoutContextTest extends TestCase
         self::assertSame($content, $resolvable->getTemplate());
     }
 
-    public function testGetContext()
+    public function testGetContext(): void
     {
         $resolvable = new ResolvableWithoutContext('');
         self::assertSame([], $resolvable->getContext());

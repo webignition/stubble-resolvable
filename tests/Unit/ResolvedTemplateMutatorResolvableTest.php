@@ -15,7 +15,7 @@ use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
 class ResolvedTemplateMutatorResolvableTest extends TestCase
 {
-    public function testImplementsInterfaces()
+    public function testImplementsInterfaces(): void
     {
         $resolvable = new ResolvedTemplateMutatorResolvable(
             new Resolvable('', []),
@@ -28,7 +28,7 @@ class ResolvedTemplateMutatorResolvableTest extends TestCase
         self::assertInstanceOf(ResolvableCollectionInterface::class, $resolvable);
     }
 
-    public function testGetTemplate()
+    public function testGetTemplate(): void
     {
         $template = 'template content';
         $resolvable = new ResolvedTemplateMutatorResolvable(
@@ -40,7 +40,7 @@ class ResolvedTemplateMutatorResolvableTest extends TestCase
         self::assertSame($template, $resolvable->getTemplate());
     }
 
-    public function testGetContext()
+    public function testGetContext(): void
     {
         $context = [
             'key1' => 'value1',
@@ -63,7 +63,7 @@ class ResolvedTemplateMutatorResolvableTest extends TestCase
         string $resolvedTemplate,
         ResolvedTemplateMutatorResolvable $resolvable,
         string $expectedMutatedResolvedTemplate
-    ) {
+    ): void {
         $mutators = $resolvable->getResolvedTemplateMutators();
         foreach ($mutators as $mutator) {
             if (is_callable($mutator)) {
@@ -74,6 +74,9 @@ class ResolvedTemplateMutatorResolvableTest extends TestCase
         self::assertSame($expectedMutatedResolvedTemplate, $resolvedTemplate);
     }
 
+    /**
+     * @return array[]
+     */
     public function resolvedTemplateMutatorsDataProvider(): array
     {
         return [
@@ -125,7 +128,7 @@ class ResolvedTemplateMutatorResolvableTest extends TestCase
         ];
     }
 
-    public function testGetResolvable()
+    public function testGetResolvable(): void
     {
         $encapsulatedResolvable = new Resolvable('', []);
 
@@ -142,11 +145,14 @@ class ResolvedTemplateMutatorResolvableTest extends TestCase
     /**
      * @dataProvider countDataProvider
      */
-    public function testCount(ResolvedTemplateMutatorResolvable $resolvable, int $expectedCount)
+    public function testCount(ResolvedTemplateMutatorResolvable $resolvable, int $expectedCount): void
     {
         self::assertSame($expectedCount, count($resolvable));
     }
 
+    /**
+     * @return array[]
+     */
     public function countDataProvider(): array
     {
         return [
@@ -184,11 +190,14 @@ class ResolvedTemplateMutatorResolvableTest extends TestCase
      * @param mixed $item
      * @param int|null $expectedIndex
      */
-    public function testGetIndexForItem(ResolvedTemplateMutatorResolvable $collection, $item, ?int $expectedIndex)
+    public function testGetIndexForItem(ResolvedTemplateMutatorResolvable $collection, $item, ?int $expectedIndex): void
     {
         self::assertSame($expectedIndex, $collection->getIndexForItem($item));
     }
 
+    /**
+     * @return array[]
+     */
     public function getItemForIndexDataProvider(): array
     {
         $resolvable = new Resolvable('', []);
