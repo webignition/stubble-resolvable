@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\StubbleResolvable;
 
-class ResolvedTemplateMutatorResolvable implements
-    ResolvableCollectionInterface,
-    ResolvableProviderInterface,
-    ResolvedTemplateMutationInterface
+use webignition\StubbleResolvable\ResolvableCollectionInterface as CollectionInterface;
+use webignition\StubbleResolvable\ResolvableProviderInterface as ProviderInterface;
+use webignition\StubbleResolvable\ResolvedTemplateMutationInterface as TemplateMutationInterface;
+
+class ResolvedTemplateMutatorResolvable implements CollectionInterface, ProviderInterface, TemplateMutationInterface
 {
     private ResolvableInterface $resolvable;
 

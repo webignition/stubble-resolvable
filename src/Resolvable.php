@@ -9,12 +9,11 @@ class Resolvable implements ResolvableInterface
     private string $template;
 
     /**
-     * @var array<string, string|\Stringable|ResolvableInterface>
+     * @var array<string, ResolvableInterface|string|\Stringable>
      */
     private array $context;
 
     /**
-     * @param string $template
      * @param array<string, mixed> $context
      */
     public function __construct(string $template, array $context)
@@ -22,10 +21,10 @@ class Resolvable implements ResolvableInterface
         $this->template = $template;
 
         $filteredContext = [];
-        foreach  ($context as $key => $value) {
+        foreach ($context as $key => $value) {
             if (
-                is_string($key) &&
-                (
+                is_string($key)
+                && (
                     is_string($value) || $value instanceof \Stringable || $value instanceof ResolvableInterface
                 )
             ) {

@@ -12,14 +12,13 @@ class ResolvableCollection implements ResolvableCollectionInterface, \IteratorAg
     public const GENERATED_IDENTIFIER_LENGTH = 16;
 
     /**
-     * @var array<int, string|\Stringable|ResolvableInterface>
+     * @var array<int, ResolvableInterface|string|\Stringable>
      */
     private array $items = [];
     private string $identifier;
 
     /**
      * @param array<mixed> $items
-     * @param string $identifier
      */
     public function __construct(array $items, string $identifier)
     {
@@ -36,10 +35,6 @@ class ResolvableCollection implements ResolvableCollectionInterface, \IteratorAg
 
     /**
      * @param array<mixed> $items
-     * @param int $length
-     * @param IdentifierGenerator|null $identifierGenerator
-     *
-     * @return self
      */
     public static function create(
         array $items,
@@ -66,7 +61,7 @@ class ResolvableCollection implements ResolvableCollectionInterface, \IteratorAg
                     $this->createItemIdentifier($resolvableItemIndex)
                 );
 
-                $resolvableItemIndex++;
+                ++$resolvableItemIndex;
             }
         }
 
@@ -85,7 +80,7 @@ class ResolvableCollection implements ResolvableCollectionInterface, \IteratorAg
                 $itemIdentifier = $this->createItemIdentifier($resolvableItemIndex);
                 $context[$itemIdentifier] = $item;
 
-                $resolvableItemIndex++;
+                ++$resolvableItemIndex;
             }
         }
 
@@ -93,21 +88,11 @@ class ResolvableCollection implements ResolvableCollectionInterface, \IteratorAg
     }
 
     /**
-     * @return \Traversable<int, string|\Stringable|ResolvableInterface>
+     * @return \Traversable<int, ResolvableInterface|string|\Stringable>
      */
     public function getIterator(): iterable
     {
         return new \ArrayIterator($this->items);
-    }
-
-    private function createItemTemplate(string $identifier): string
-    {
-        return '{{ ' . $identifier . ' }}';
-    }
-
-    private function createItemIdentifier(int $index): string
-    {
-        return $this->identifier . ((string) $index);
     }
 
     public function getIndexForItem(string|\Stringable|ResolvableInterface $item): ?int
@@ -120,5 +105,15 @@ class ResolvableCollection implements ResolvableCollectionInterface, \IteratorAg
     public function count(): int
     {
         return count($this->items);
+    }
+
+    private function createItemTemplate(string $identifier): string
+    {
+        return '{{ ' . $identifier . ' }}';
+    }
+
+    private function createItemIdentifier(int $index): string
+    {
+        return $this->identifier . ((string) $index);
     }
 }

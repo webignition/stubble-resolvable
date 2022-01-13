@@ -6,5 +6,5 @@ namespace webignition\StubbleResolvable;
 
 interface ResolvableCollectionInterface extends ResolvableInterface, \Countable
 {
-    public function getIndexForItem(string|\Stringable|ResolvableInterface$item): ?int;
+    public function getIndexForItem(string|\Stringable|ResolvableInterface $item): ?int;
 }

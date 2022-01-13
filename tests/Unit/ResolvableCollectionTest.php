@@ -41,7 +41,8 @@ class ResolvableCollectionTest extends TestCase
         $identifierGenerator
             ->shouldReceive('generate')
             ->with($length)
-            ->andReturn($generatedIdentifier);
+            ->andReturn($generatedIdentifier)
+        ;
 
         $collection = ResolvableCollection::create($items, $length, $identifierGenerator);
         self::assertInstanceOf(ResolvableCollection::class, $collection);
@@ -59,9 +60,6 @@ class ResolvableCollectionTest extends TestCase
 
     /**
      * @dataProvider getTemplateDataProvider
-     *
-     * @param ResolvableCollection $collection
-     * @param string $expectedTemplate
      */
     public function testGetTemplate(ResolvableCollection $collection, string $expectedTemplate): void
     {
@@ -108,8 +106,7 @@ class ResolvableCollectionTest extends TestCase
     /**
      * @dataProvider getContextDataProvider
      *
-     * @param ResolvableCollection $collection
-     * @param string[]|ResolvableCollection[] $expectedContext
+     * @param ResolvableCollection[]|string[] $expectedContext
      */
     public function testGetContext(ResolvableCollection $collection, array $expectedContext): void
     {

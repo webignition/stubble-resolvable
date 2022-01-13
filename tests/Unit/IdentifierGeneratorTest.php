@@ -23,11 +23,13 @@ class IdentifierGeneratorTest extends TestCase
 
         PHPMockery::mock('webignition\StubbleResolvable', 'random_bytes')
             ->with($length)
-            ->andReturn($mockedRandomBytes);
+            ->andReturn($mockedRandomBytes)
+        ;
 
         PHPMockery::mock('webignition\StubbleResolvable', 'bin2hex')
             ->with($mockedRandomBytes)
-            ->andReturn($mockedBin2Hex);
+            ->andReturn($mockedBin2Hex)
+        ;
 
         $identifier = $generator->generate($length);
 
@@ -43,10 +45,12 @@ class IdentifierGeneratorTest extends TestCase
 
         PHPMockery::mock('webignition\StubbleResolvable', 'random_bytes')
             ->with($length)
-            ->andThrow(new \Exception('message', 123));
+            ->andThrow(new \Exception('message', 123))
+        ;
 
         PHPMockery::mock('webignition\StubbleResolvable', 'str_shuffle')
-            ->andReturn($mockedStrShuffle);
+            ->andReturn($mockedStrShuffle)
+        ;
 
         $identifier = $generator->generate($length);
 
