@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\StubbleResolvable;
 
-class ResolvedTemplateMutatorResolvable implements
-    ResolvableCollectionInterface,
-    ResolvableProviderInterface,
-    ResolvedTemplateMutationInterface
+use webignition\StubbleResolvable\ResolvableCollectionInterface as CollectionInterface;
+use webignition\StubbleResolvable\ResolvableProviderInterface as ProviderInterface;
+use webignition\StubbleResolvable\ResolvedTemplateMutationInterface as TemplateMutationInterface;
+
+class ResolvedTemplateMutatorResolvable implements CollectionInterface, ProviderInterface, TemplateMutationInterface
 {
     private ResolvableInterface $resolvable;
 
@@ -62,7 +63,7 @@ class ResolvedTemplateMutatorResolvable implements
         return 1;
     }
 
-    public function getIndexForItem($item): ?int
+    public function getIndexForItem(string|\Stringable|ResolvableInterface $item): ?int
     {
         if ($this->resolvable instanceof ResolvableCollectionInterface) {
             return $this->resolvable->getIndexForItem($item);

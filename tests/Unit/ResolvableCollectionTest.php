@@ -41,7 +41,8 @@ class ResolvableCollectionTest extends TestCase
         $identifierGenerator
             ->shouldReceive('generate')
             ->with($length)
-            ->andReturn($generatedIdentifier);
+            ->andReturn($generatedIdentifier)
+        ;
 
         $collection = ResolvableCollection::create($items, $length, $identifierGenerator);
         self::assertInstanceOf(ResolvableCollection::class, $collection);
@@ -59,9 +60,6 @@ class ResolvableCollectionTest extends TestCase
 
     /**
      * @dataProvider getTemplateDataProvider
-     *
-     * @param ResolvableCollection $collection
-     * @param string $expectedTemplate
      */
     public function testGetTemplate(ResolvableCollection $collection, string $expectedTemplate): void
     {
@@ -69,7 +67,7 @@ class ResolvableCollectionTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function getTemplateDataProvider(): array
     {
@@ -108,8 +106,7 @@ class ResolvableCollectionTest extends TestCase
     /**
      * @dataProvider getContextDataProvider
      *
-     * @param ResolvableCollection $collection
-     * @param string[]|ResolvableCollection[] $expectedContext
+     * @param ResolvableCollection[]|string[] $expectedContext
      */
     public function testGetContext(ResolvableCollection $collection, array $expectedContext): void
     {
@@ -117,7 +114,7 @@ class ResolvableCollectionTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function getContextDataProvider(): array
     {
@@ -191,7 +188,7 @@ class ResolvableCollectionTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function countDataProvider(): array
     {
@@ -213,18 +210,17 @@ class ResolvableCollectionTest extends TestCase
 
     /**
      * @dataProvider getItemForIndexDataProvider
-     *
-     * @param ResolvableCollection $collection
-     * @param mixed $item
-     * @param int|null $expectedIndex
      */
-    public function testGetIndexForItem(ResolvableCollection $collection, $item, ?int $expectedIndex): void
-    {
+    public function testGetIndexForItem(
+        ResolvableCollection $collection,
+        string|\Stringable|ResolvableInterface $item,
+        ?int $expectedIndex
+    ): void {
         self::assertSame($expectedIndex, $collection->getIndexForItem($item));
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function getItemForIndexDataProvider(): array
     {

@@ -5,26 +5,25 @@ declare(strict_types=1);
 namespace webignition\StubbleResolvable;
 
 /**
- * @implements \IteratorAggregate<string|ResolvableInterface>
+ * @implements \IteratorAggregate<string|\Stringable|ResolvableInterface>
  */
 class ResolvableCollection implements ResolvableCollectionInterface, \IteratorAggregate
 {
     public const GENERATED_IDENTIFIER_LENGTH = 16;
 
     /**
-     * @var array<int, string|ResolvableInterface>
+     * @var array<int, ResolvableInterface|string|\Stringable>
      */
     private array $items = [];
     private string $identifier;
 
     /**
      * @param array<mixed> $items
-     * @param string $identifier
      */
     public function __construct(array $items, string $identifier)
     {
         foreach ($items as $item) {
-            if (is_string($item) || is_object($item) && method_exists($item, '__toString')) {
+            if (is_string($item) || $item instanceof \Stringable) {
                 $this->items[] = (string) $item;
             } elseif ($item instanceof ResolvableInterface) {
                 $this->items[] = $item;
@@ -36,10 +35,6 @@ class ResolvableCollection implements ResolvableCollectionInterface, \IteratorAg
 
     /**
      * @param array<mixed> $items
-     * @param int $length
-     * @param IdentifierGenerator|null $identifierGenerator
-     *
-     * @return self
      */
     public static function create(
         array $items,
@@ -66,7 +61,7 @@ class ResolvableCollection implements ResolvableCollectionInterface, \IteratorAg
                     $this->createItemIdentifier($resolvableItemIndex)
                 );
 
-                $resolvableItemIndex++;
+                ++$resolvableItemIndex;
             }
         }
 
@@ -85,7 +80,7 @@ class ResolvableCollection implements ResolvableCollectionInterface, \IteratorAg
                 $itemIdentifier = $this->createItemIdentifier($resolvableItemIndex);
                 $context[$itemIdentifier] = $item;
 
-                $resolvableItemIndex++;
+                ++$resolvableItemIndex;
             }
         }
 
@@ -93,11 +88,23 @@ class ResolvableCollection implements ResolvableCollectionInterface, \IteratorAg
     }
 
     /**
-     * @return \Traversable<string|ResolvableInterface>
+     * @return \Traversable<int, ResolvableInterface|string|\Stringable>
      */
     public function getIterator(): iterable
     {
         return new \ArrayIterator($this->items);
+    }
+
+    public function getIndexForItem(string|\Stringable|ResolvableInterface $item): ?int
+    {
+        $position = array_search($item, $this->items);
+
+        return false === $position ? null : $position;
+    }
+
+    public function count(): int
+    {
+        return count($this->items);
     }
 
     private function createItemTemplate(string $identifier): string
@@ -108,22 +115,5 @@ class ResolvableCollection implements ResolvableCollectionInterface, \IteratorAg
     private function createItemIdentifier(int $index): string
     {
         return $this->identifier . ((string) $index);
-    }
-
-    /**
-     * @param string|ResolvableInterface $item
-     *
-     * @return int|null
-     */
-    public function getIndexForItem($item): ?int
-    {
-        $position = array_search($item, $this->items);
-
-        return false === $position ? null : $position;
-    }
-
-    public function count(): int
-    {
-        return count($this->items);
     }
 }

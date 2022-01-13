@@ -8,9 +8,6 @@ class ResolvableWithoutContext implements ResolvableInterface
 {
     private string $content;
 
-    /**
-     * @param string $content
-     */
     public function __construct(string $content)
     {
         $this->content = $content;
