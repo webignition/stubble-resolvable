@@ -38,7 +38,7 @@
         ]
     },
     "require": {
-        "php": ">=7.4|^8"
+        "php": "^8.0"
     },
     "require-dev": {
         "mockery/mockery": "^1.4",
