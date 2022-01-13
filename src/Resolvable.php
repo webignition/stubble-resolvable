@@ -9,7 +9,7 @@ class Resolvable implements ResolvableInterface
     private string $template;
 
     /**
-     * @var array<string, mixed>
+     * @var array<string, string|\Stringable|ResolvableInterface>
      */
     private array $context;
 
@@ -21,25 +21,28 @@ class Resolvable implements ResolvableInterface
     {
         $this->template = $template;
 
-        $this->context = array_filter($context, function ($item) {
-            return self::canResolve($item);
-        });
+        $filteredContext = [];
+        foreach  ($context as $key => $value) {
+            if (
+                is_string($key) &&
+                (
+                    is_string($value) || $value instanceof \Stringable || $value instanceof ResolvableInterface
+                )
+            ) {
+                $filteredContext[$key] = $value;
+            }
+        }
 
-        $this->context = $context;
+        $this->context = $filteredContext;
     }
 
-    /**
-     * @param mixed $item
-     *
-     * @return bool
-     */
-    public static function canResolve($item): bool
+    public static function canResolve(mixed $item): bool
     {
         if (is_string($item)) {
             return true;
         }
 
-        if (is_object($item) && method_exists($item, '__toString')) {
+        if ($item instanceof \Stringable) {
             return true;
         }
 

@@ -75,7 +75,7 @@ class ResolvedTemplateMutatorResolvableTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function resolvedTemplateMutatorsDataProvider(): array
     {
@@ -151,7 +151,7 @@ class ResolvedTemplateMutatorResolvableTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function countDataProvider(): array
     {
@@ -185,18 +185,17 @@ class ResolvedTemplateMutatorResolvableTest extends TestCase
 
     /**
      * @dataProvider getItemForIndexDataProvider
-     *
-     * @param ResolvedTemplateMutatorResolvable $collection
-     * @param mixed $item
-     * @param int|null $expectedIndex
      */
-    public function testGetIndexForItem(ResolvedTemplateMutatorResolvable $collection, $item, ?int $expectedIndex): void
-    {
+    public function testGetIndexForItem(
+        ResolvedTemplateMutatorResolvable $collection,
+        string|\Stringable|ResolvableInterface $item,
+        ?int $expectedIndex
+    ): void {
         self::assertSame($expectedIndex, $collection->getIndexForItem($item));
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function getItemForIndexDataProvider(): array
     {

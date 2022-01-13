@@ -9,7 +9,7 @@ interface ResolvableInterface
     public function getTemplate(): string;
 
     /**
-     * @return array<string, string|ResolvableInterface>
+     * @return array<string, string|\Stringable|ResolvableInterface>
      */
     public function getContext(): array;
 }

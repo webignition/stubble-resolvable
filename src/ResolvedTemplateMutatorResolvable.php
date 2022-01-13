@@ -62,7 +62,7 @@ class ResolvedTemplateMutatorResolvable implements
         return 1;
     }
 
-    public function getIndexForItem($item): ?int
+    public function getIndexForItem(string|\Stringable|ResolvableInterface $item): ?int
     {
         if ($this->resolvable instanceof ResolvableCollectionInterface) {
             return $this->resolvable->getIndexForItem($item);

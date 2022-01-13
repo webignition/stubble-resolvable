@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace webignition\StubbleResolvable;
 
 /**
- * @implements \IteratorAggregate<string|ResolvableInterface>
+ * @implements \IteratorAggregate<string|\Stringable|ResolvableInterface>
  */
 class ResolvableCollection implements ResolvableCollectionInterface, \IteratorAggregate
 {
     public const GENERATED_IDENTIFIER_LENGTH = 16;
 
     /**
-     * @var array<int, string|ResolvableInterface>
+     * @var array<int, string|\Stringable|ResolvableInterface>
      */
     private array $items = [];
     private string $identifier;
@@ -24,7 +24,7 @@ class ResolvableCollection implements ResolvableCollectionInterface, \IteratorAg
     public function __construct(array $items, string $identifier)
     {
         foreach ($items as $item) {
-            if (is_string($item) || is_object($item) && method_exists($item, '__toString')) {
+            if (is_string($item) || $item instanceof \Stringable) {
                 $this->items[] = (string) $item;
             } elseif ($item instanceof ResolvableInterface) {
                 $this->items[] = $item;
@@ -93,7 +93,7 @@ class ResolvableCollection implements ResolvableCollectionInterface, \IteratorAg
     }
 
     /**
-     * @return \Traversable<string|ResolvableInterface>
+     * @return \Traversable<int, string|\Stringable|ResolvableInterface>
      */
     public function getIterator(): iterable
     {
@@ -110,12 +110,7 @@ class ResolvableCollection implements ResolvableCollectionInterface, \IteratorAg
         return $this->identifier . ((string) $index);
     }
 
-    /**
-     * @param string|ResolvableInterface $item
-     *
-     * @return int|null
-     */
-    public function getIndexForItem($item): ?int
+    public function getIndexForItem(string|\Stringable|ResolvableInterface $item): ?int
     {
         $position = array_search($item, $this->items);
 
