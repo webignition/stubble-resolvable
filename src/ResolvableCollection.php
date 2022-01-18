@@ -90,7 +90,7 @@ class ResolvableCollection implements ResolvableCollectionInterface, \IteratorAg
     /**
      * @return \Traversable<int, ResolvableInterface|string|\Stringable>
      */
-    public function getIterator(): iterable
+    public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->items);
     }
