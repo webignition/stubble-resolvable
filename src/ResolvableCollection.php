@@ -35,6 +35,7 @@ class ResolvableCollection implements ResolvableCollectionInterface, \IteratorAg
 
     /**
      * @param array<mixed> $items
+     * @param int<1, max> $length
      */
     public static function create(
         array $items,

@@ -6,6 +6,9 @@ namespace webignition\StubbleResolvable;
 
 class IdentifierGenerator
 {
+    /**
+     * @param int<1, max> $length
+     */
     public function generate(int $length): string
     {
         try {
