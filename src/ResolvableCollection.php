@@ -35,6 +35,7 @@ class ResolvableCollection implements ResolvableCollectionInterface, \IteratorAg
 
     /**
      * @param array<mixed> $items
+     * @param int<1, max>  $length
      */
     public static function create(
         array $items,
@@ -90,7 +91,7 @@ class ResolvableCollection implements ResolvableCollectionInterface, \IteratorAg
     /**
      * @return \Traversable<int, ResolvableInterface|string|\Stringable>
      */
-    public function getIterator(): iterable
+    public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->items);
     }
